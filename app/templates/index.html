@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CouchBnB - Mock Airbnb Review Generator</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🛋️ CouchBnB</h1>
+            <p class="subtitle">Create fun Airbnb-style reviews for your couch surfing adventures!</p>
+        </header>
+
+        <div class="editor-wrapper">
+            <!-- Template Selector -->
+            <div class="templates">
+                <p><strong>✨ Choose a template:</strong></p>
+                <div class="template-buttons">
+                    <button class="template-btn" data-template="Thanks for letting me crash on your couch, Mate!">
+                        <span class="template-name">The Casual</span>
+                    </button>
+                    <button class="template-btn" data-template="Your couch was more comfortable than most hotels! Thanks for the hospitality!">
+                        <span class="template-name">The Compliment</span>
+                    </button>
+                    <button class="template-btn" data-template="10/10 would couch surf again. You're the best host!">
+                        <span class="template-name">The Perfect Score</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Editable Review Card -->
+            <div id="review-card" class="review-card">
+                <div class="review-header">
+                    <div class="avatar-wrapper">
+                        <img id="preview-avatar" src="{{ url_for('static', filename='images/default-avatar.png') }}" alt="Profile" class="avatar">
+                        <label for="profile-pic" class="avatar-upload-label">📷</label>
+                        <input type="file" id="profile-pic" accept="image/*" style="display: none;">
+                    </div>
+                    <div class="reviewer-info">
+                        <input type="text" id="reviewer-name" class="editable-name" placeholder="Your Name" maxlength="50" value="Your Name">
+                        <div class="date-picker-wrapper">
+                            <select id="review-month" class="month-select">
+                                <option value="0">January</option>
+                                <option value="1">February</option>
+                                <option value="2">March</option>
+                                <option value="3">April</option>
+                                <option value="4">May</option>
+                                <option value="5">June</option>
+                                <option value="6">July</option>
+                                <option value="7">August</option>
+                                <option value="8">September</option>
+                                <option value="9">October</option>
+                                <option value="10">November</option>
+                                <option value="11">December</option>
+                            </select>
+                            <select id="review-year" class="year-select"></select>
+                        </div>
+                    </div>
+                </div>
+                <div class="review-stars-editable">
+                    <span class="star" data-rating="1">★</span>
+                    <span class="star" data-rating="2">★</span>
+                    <span class="star" data-rating="3">★</span>
+                    <span class="star" data-rating="4">★</span>
+                    <span class="star" data-rating="5">★</span>
+                </div>
+                <input type="hidden" id="rating" value="5">
+                <textarea id="review-text" class="editable-review" placeholder="Write your review here..." maxlength="500">Your review will appear here...</textarea>
+                <div class="char-counter"><span id="char-count">33</span>/500</div>
+                <div class="airbnb-badge">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="#FF5A5F">
+                        <path d="M8 0L10.5 5L16 5.75L12 9.5L13 15L8 12.25L3 15L4 9.5L0 5.75L5.5 5L8 0Z"/>
+                    </svg>
+                    <span>Verified CouchBnB Review</span>
+                </div>
+            </div>
+
+            <!-- Download Button -->
+            <div class="download-section">
+                <button id="download-btn" class="download-btn">Download</button>
+            </div>
+        </div>
+
+        <footer>
+            <p>💡 This is for entertainment purposes only. Not affiliated with Airbnb.</p>
+        </footer>
+    </div>
+
+    <!-- Image Crop Modal -->
+    <div id="crop-modal" class="crop-modal">
+        <div class="crop-modal-content">
+            <div class="crop-modal-header">
+                <h3>Crop Your Photo</h3>
+                <button id="crop-close" class="crop-close">&times;</button>
+            </div>
+            <div class="crop-container">
+                <img id="crop-image" src="" alt="Image to crop">
+            </div>
+            <div class="crop-modal-footer">
+                <button id="crop-cancel" class="crop-btn crop-btn-secondary">Cancel</button>
+                <button id="crop-apply" class="crop-btn crop-btn-primary">Apply</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
