@@ -1,13 +1,16 @@
-version: '3.8'
-
 services:
-  web:
+  app:
     build: .
+    container_name: couchbnb-app
     ports:
-      - "5001:5001"
+      - "127.0.0.1:8081:5001"
     volumes:
       - ./app:/app/app
     environment:
-      - FLASK_ENV=development
-      - FLASK_DEBUG=1
+      - FLASK_ENV=production
+      - GUNICORN_WORKERS=2
+      - GUNICORN_WORKER_CLASS=sync
+      - GUNICORN_TIMEOUT=60
+      - GUNICORN_MAX_REQUESTS=500
+      - GUNICORN_MAX_REQUESTS_JITTER=50
     restart: unless-stopped
