@@ -1,31 +1,32 @@
 #!/bin/bash
-# CouchBnB Quick Start Script
+# Production startup script
 
-echo "🛋️  CouchBnB - Starting application..."
-echo ""
+echo "Starting application with FLASK_ENV=$FLASK_ENV"
 
-# Check if virtual environment exists
-if [ ! -d "venv" ] && [ ! -d ".venv" ]; then
-    echo "Creating virtual environment..."
-    python3 -m venv venv
-    echo "✓ Virtual environment created"
+# Check if we're in production mode
+if [ "$FLASK_ENV" = "production" ]; then
+    echo "Starting production server with Gunicorn..."
+    
+    # Set default values for production configuration
+    WORKERS=${GUNICORN_WORKERS:-2}
+    WORKER_CLASS=${GUNICORN_WORKER_CLASS:-sync}
+    TIMEOUT=${GUNICORN_TIMEOUT:-60}
+    MAX_REQUESTS=${GUNICORN_MAX_REQUESTS:-500}
+    MAX_REQUESTS_JITTER=${GUNICORN_MAX_REQUESTS_JITTER:-50}
+    
+    exec gunicorn \
+        --bind 0.0.0.0:5001 \
+        --workers $WORKERS \
+        --worker-class $WORKER_CLASS \
+        --timeout $TIMEOUT \
+        --max-requests $MAX_REQUESTS \
+        --max-requests-jitter $MAX_REQUESTS_JITTER \
+        --access-logfile - \
+        --error-logfile - \
+        --log-level info \
+        --preload \
+        run:app
+else
+    echo "Starting development server..."
+    exec python run.py
 fi
-
-# Activate virtual environment
-if [ -d "venv" ]; then
-    source venv/bin/activate
-elif [ -d ".venv" ]; then
-    source .venv/bin/activate
-fi
-
-# Install dependencies
-echo "Installing dependencies..."
-pip install -q -r requirements.txt
-echo "✓ Dependencies installed"
-
-# Start the application
-echo ""
-echo "Starting Flask application..."
-echo "➜ Open http://localhost:5001 in your browser"
-echo ""
-python run.py
