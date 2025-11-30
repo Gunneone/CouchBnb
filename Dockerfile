@@ -21,5 +21,8 @@ COPY . .
 # Expose port 5001
 EXPOSE 5001
 
+# Make start.sh executable
+RUN chmod +x start.sh
+
 # Run the application
-CMD ["python", "run.py"]
+CMD ["./start.sh"]
